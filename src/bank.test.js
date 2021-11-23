@@ -19,16 +19,27 @@ describe('Bank methods', () => {
 			expect( () => deposit({ balance: 454 }, 37) ).toThrow()
 		})
 		
-		// throws an error if amount not positive number
-		// -17, Infinity, NaN
+		it('throws an error if amount not positive number', () => {
+			// -17, Infinity, NaN, 0
+			const validAccount = { id: 'zxcvbnm,.', balance: 275.5 }
+			expect( () => deposit(validAccount, -17) ).toThrow()
+			expect( () => deposit(validAccount, Infinity) ).toThrow()
+			expect( () => deposit(validAccount, NaN) ).toThrow()
+			expect( () => deposit(validAccount, 0) ).toThrow()
+
+			// noll är ett gränsvärde - gränser bör kontrolleras extra noga
+		})
 	})
+
+	// To do:
+	// describe('withdraw', () => {})
 })
 /*
 interface Account {
 	id: string;
 	balance: number;
 }
-function deposit(account: Account, amount: number): void
-Ökar saldot på kontot med amount. Alla flyttal (floating point, normala JavaScript number) som rimligtvis kan tänkas motsvara ett pengabelopp är tillåtna värden. Om funktionen får ett otillåtet tal som parameter ska den kasta ett Error med ett lämpligt felmeddelande.
+function withdraw(account: Account, amount: number): void
+Minskar saldot på kontot med amount, förutsatt att det finns tillräckligt med pengar på kontot. Om det inte gör det ska funktionen inte dra några pengar utan i stället kasta ett Error med ett lämpligt felmeddelande. Samma sak om amount är ett otillåtet tal.
 
 */
