@@ -8,8 +8,15 @@ function deposit(bankManager, amount) {
 	bankManager.setBalance(currentBalance + amount)
 }
 
-function withdraw() {
-	throw new Error('not implemented yet')
+function withdraw(bankManager, amount) {
+	if( !isPositiveNumber(amount) ) {
+		throw new Error('Not a valid amount')
+	}
+	let currentBalance = bankManager.getBalance()
+	if( currentBalance < amount ) {
+		throw new Error('Not enough money in account')
+	}
+	bankManager.setBalance(currentBalance - amount)
 }
 
 function transfer() {
