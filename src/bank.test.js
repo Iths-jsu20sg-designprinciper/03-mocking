@@ -1,5 +1,5 @@
 require('jest')
-const { deposit } = require('./bank.js')
+const { deposit, withdraw } = require('./bank.js')
 
 describe('Bank methods', () => {
 	describe('deposit', () => {
@@ -32,7 +32,39 @@ describe('Bank methods', () => {
 	})
 
 	// To do:
-	// describe('withdraw', () => {})
+	describe('withdraw', () => {
+		it('removes money from account', () => {
+			const startingBalance = 140
+			let account = { id: 'onmiunuyb', balance: startingBalance }
+			const amount = 35
+			withdraw(account, amount)
+			expect( account.balance ).toBe(startingBalance - amount)
+		})
+
+		it('throws an error if invalid account object', () => {
+			expect( () => withdraw(null, 37) ).toThrow('account')
+			expect( () => withdraw({}, 37) ).toThrow('account')
+			expect( () => withdraw({ id: '123ewrr'}, 37) ).toThrow('account')
+			expect( () => withdraw({ balance: 454 }, 37) ).toThrow('account')
+		})
+
+		it('throws an error if amount not positive number', () => {
+			// -17, Infinity, NaN, 0
+			const validAccount = { id: 'zxcvbnm,.', balance: 275.5 }
+			expect( () => withdraw(validAccount, -17) ).toThrow('amount')
+			expect( () => withdraw(validAccount, Infinity) ).toThrow('amount')
+			expect( () => withdraw(validAccount, NaN) ).toThrow('amount')
+			expect( () => withdraw(validAccount, 0) ).toThrow('amount')
+
+			// noll är ett gränsvärde - gränser bör kontrolleras extra noga
+		})
+
+		it('throws an error if amount is greater than the account balance', () => {
+			const account = { id: 'yurihnvidmr', balance: 360 }
+			const tooMuch = account.balance + 1
+			expect( () => withdraw(account, tooMuch) ).toThrow('Not enough money')
+		})
+	})
 })
 /*
 interface Account {

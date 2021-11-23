@@ -9,6 +9,20 @@ function deposit(account, amount) {
 	account.balance += amount
 }
 
+function withdraw(account, amount) {
+	if( !isValidAccountObject(account) ) {
+		throw new Error('Invalid account object')
+	}
+	else if( !isPositiveNumber(amount) ) {
+		throw new Error('Invalid amount')
+	}
+	else if( amount > account.balance ) {
+		throw new Error('Not enough money in account')
+	}
+	account.balance -= amount
+}
+
+
 function isPositiveNumber(value) {
 	if( value <= 0 ) return false;
 	else if( value === Infinity ) return false;
@@ -28,4 +42,4 @@ function isValidAccountObject(account) {
 	return true
 }
 
-module.exports = { deposit }
+module.exports = { deposit, withdraw }
